@@ -7,13 +7,22 @@ from ..items import Proxy
 
 
 class KuaiDaiLiSpider(scrapy.Spider):
+    """
+    自动爬取 kuaidaili.com 的代理
+    """
+
+    # 代理名称
     name = 'KuaiDaiLiSpider'
+    # 网站的根地址
     host = 'http://www.kuaidaili.com'
+    # 允许爬虫爬取的域列表
     allowed_domains = ['www.kuaidaili.com']
+    # 种子站点列表
     start_urls = [
         'http://www.kuaidaili.com/free/'
     ]
 
+    # 将种子站点加入爬取队列
     def start_requests(self):
         for url in self.start_urls:
             yield Request(url=url, callback=self.parse_type)
@@ -26,7 +35,7 @@ class KuaiDaiLiSpider(scrapy.Spider):
             name = type.css('::text').extract_first()
             yield Request(url=url, callback=self.parse_proxy)
 
-    # 爬每一页的代理
+    # 爬每一页的代理，并将每一个代理投递给 items pipe
     def parse_proxy(self, response):
         # 找出代理列表
         proxys = response.css('#list tbody > tr')

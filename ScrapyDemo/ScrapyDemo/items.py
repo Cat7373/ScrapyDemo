@@ -9,6 +9,8 @@ from scrapy import Item, Field
 
 
 class Proxy(Item):
+    """一个代理 item"""
+
     ip = Field()
     port = Field()
     anonymity = Field()

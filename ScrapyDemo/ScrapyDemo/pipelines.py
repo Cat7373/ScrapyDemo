@@ -12,6 +12,8 @@ import MySQLdb.cursors
 
 
 class ScrapydemoPipeline(object):
+    """处理 Proxy item，将其存入数据库"""
+
     @classmethod
     def from_settings(cls, settings):
         params = dict(
@@ -26,8 +28,8 @@ class ScrapydemoPipeline(object):
         dbpool = adbapi.ConnectionPool('MySQLdb', **params)
         return cls(dbpool)
 
-    def __init__(self,dbpool):
-        self.dbpool=dbpool
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
 
     def process_item(self, item, spider):
         if isinstance(item, Proxy):
@@ -36,10 +38,12 @@ class ScrapydemoPipeline(object):
         else:
             return item
 
-    def __insert_proxy(self, tx, item):
+    @classmethod
+    def __insert_proxy(cls, tx, item):
         sql = "INSERT INTO proxy(ip, port, anonymity, `type`, location) VALUES (%s, %s, %s, %s, %s)"
         params = (item["ip"], item["port"], item["anonymity"], item["type"], item["location"])
         tx.execute(sql, params)
 
-    def __handle_error(self, failue, item, spider):
+    @classmethod
+    def __handle_error(cls, failue, item, spider):
         print failue

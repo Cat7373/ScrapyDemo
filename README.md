@@ -15,4 +15,7 @@ scrapy crawl XiCiDaiLiSpider
 ## TODO
 * [ ] 使用代理并自动随机切换、自动筛选无效代理
 * [ ] 多线程
-* [ ] 自动换 User-Agent
+* [x] 自动换 User-Agent
+* [ ] 表单登录处理、Cookies
+* [ ] 来源检查处理(Referer)
+* [ ] 根据响应头中的编码或 meta(html文件) 中的编码来设置相应的编码
