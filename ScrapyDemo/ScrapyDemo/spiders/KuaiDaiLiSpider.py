@@ -9,7 +9,7 @@ from ..items import Proxy
 class KuaiDaiLiSpider(scrapy.Spider):
     name = 'KuaiDaiLiSpider'
     host = 'http://www.kuaidaili.com'
-    allowed_domains=['www.kuaidaili.com']
+    allowed_domains = ['www.kuaidaili.com']
     start_urls = [
         'http://www.kuaidaili.com/free/'
     ]

@@ -7,5 +7,7 @@ cd ScrapyDemo
 
 # 爬 http://www.kuaidaili.com 的代理并存入数据库
 scrapy crawl KuaiDaiLiSpider
-```
 
+# 爬 http://www.xicidaili.com 的代理并存入数据库
+scrapy crawl XiCiDaiLiSpider
+```
