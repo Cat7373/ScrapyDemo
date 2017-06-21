@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for ScraprDemo project
+# Scrapy settings for ScrapyDemo project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'ScraprDemo'
+BOT_NAME = 'ScrapyDemo'
 
-SPIDER_MODULES = ['ScraprDemo.spiders']
-NEWSPIDER_MODULE = 'ScraprDemo.spiders'
+SPIDER_MODULES = ['ScrapyDemo.spiders']
+NEWSPIDER_MODULE = 'ScrapyDemo.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'ScraprDemo (+http://www.yourdomain.com)'
+#USER_AGENT = 'ScrapyDemo (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -47,13 +47,13 @@ DOWNLOAD_DELAY = 2
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'ScraprDemo.middlewares.ScraprdemoSpiderMiddleware': 543,
+#    'ScrapyDemo.middlewares.ScrapydemoSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'ScraprDemo.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'ScrapyDemo.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ DOWNLOAD_DELAY = 2
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'ScraprDemo.pipelines.ScraprdemoPipeline': 300,
+    'ScrapyDemo.pipelines.ScrapydemoPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

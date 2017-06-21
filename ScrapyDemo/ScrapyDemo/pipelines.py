@@ -11,7 +11,7 @@ import MySQLdb
 import MySQLdb.cursors
 
 
-class ScraprdemoPipeline(object):
+class ScrapydemoPipeline(object):
     @classmethod
     def from_settings(cls, settings):
         params = dict(
