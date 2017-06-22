@@ -19,7 +19,6 @@ class XiCiDaiLiSpider(scrapy.Spider):
     allowed_domains = ['www.xicidaili.com']
     # 种子站点列表
     start_urls = [
-        # TODO 三个全部挂在 57 页，下次从 57 页继续
         'http://www.xicidaili.com/wn/',
         'http://www.xicidaili.com/wt/',
         'http://www.xicidaili.com/qq/'
@@ -37,14 +36,15 @@ class XiCiDaiLiSpider(scrapy.Spider):
         for proxy in proxys:
             attrs = proxy.css('td')
 
-            proxy = Proxy()
-            proxy['ip'] = attrs[1].css('::text').extract_first()
-            proxy['port'] = attrs[2].css('::text').extract_first()
-            proxy['anonymity'] = attrs[4].css('::text').extract_first()
-            proxy['type'] = attrs[5].css('::text').extract_first()
+            proxy = Proxy(
+                ip=attrs[1].css('::text').extract_first(),
+                port=attrs[2].css('::text').extract_first(),
+                anonymity=attrs[4].css('::text').extract_first(),
+                type=attrs[5].css('::text').extract_first(),
+                location=attrs[3].css('a::text').extract_first()
+            )
             if proxy['type'] == u'QQ代理':
                 proxy['type'] = 'SOCKET5'
-            proxy['location'] = attrs[3].css('a::text').extract_first()
             yield proxy
 
         # 找下一页

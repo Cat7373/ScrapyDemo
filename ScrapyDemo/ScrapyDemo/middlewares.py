@@ -5,22 +5,59 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
+import logging
 import random
+import re
+from items import Proxy
 
 
-class UserAgentMiddleware(object):
+class RandomUserAgentMiddleware(object):
     """自动换 UserAgent 的中间件"""
 
-    agents = (
-        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36',
-        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36',
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0',
-        'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
-        'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
-        # 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)',
-    )
+    def __init__(self, agents):
+        self.agents = agents
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings.getlist('USER_AGENTS'))
 
     def process_request(self, request, spider):
-        agent = random.choice(self.agents)
-        request.headers["User-Agent"] = agent
+        request.headers.setdefault('User-Agent', random.choice(self.agents))
+
+
+class FilterInvalidProxyMiddleware(object):
+    """过滤无效的代理的中间件"""
+
+    ip_regex = re.compile(r'([1-9]?\d|1[\d]{2}|2[0-4]\d|25[0-5])(\.([1-9]?\d|1[\d]{2}|2[0-4]\d|25[0-5])){3}')
+
+    def process_spider_output(self, response, result, spider):
+        for r in result:
+            if isinstance(r, Proxy):
+                if self.__is_invalid_proxy(r):
+                    spider.log('invalid Proxy item: %s' % r, level=logging.WARN)
+                else:
+                    yield r
+
+    def __is_invalid_proxy(self, proxy):
+        # 端口验证 0 ~ 65535
+        if not proxy['port']:
+            return True
+        try:
+            port = int(proxy['port'])
+            if port <= 0 or port > 65535:
+                return True
+        except ValueError:
+            return True
+
+        # 代理类型验证 HTTP HTTPS SOCKET4/5
+        if not proxy['type']:
+            return True
+        proxy['type'] = proxy['type'].upper()
+        if proxy['type'] not in ('HTTP', 'HTTPS', 'SOCKET4', 'SOCKET5'):
+            return True
+
+        # 是否为有效 ip 验证
+        if not proxy['ip'] or self.ip_regex.match(proxy['ip']):
+            return True
+
+        return False

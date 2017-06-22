@@ -35,8 +35,7 @@ class ScrapydemoPipeline(object):
         if isinstance(item, Proxy):
             query = self.dbpool.runInteraction(self.__insert_proxy, item)
             query.addErrback(self.__handle_error, item, spider)
-        else:
-            return item
+        return item
 
     @classmethod
     def __insert_proxy(cls, tx, item):

@@ -42,12 +42,13 @@ class KuaiDaiLiSpider(scrapy.Spider):
         for proxy in proxys:
             attrs = [attr.css('::text').extract_first() for attr in proxy.css('td')]
 
-            proxy = Proxy()
-            proxy['ip'] = attrs[0]
-            proxy['port'] = attrs[1]
-            proxy['anonymity'] = attrs[2]
-            proxy['type'] = attrs[3]
-            proxy['location'] = attrs[4]
+            proxy = Proxy(
+                ip=attrs[0],
+                port=attrs[1],
+                anonymity=attrs[2],
+                type=attrs[3],
+                location=attrs[4]
+            )
             yield proxy
 
         # 找下一页
